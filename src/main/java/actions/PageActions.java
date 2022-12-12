@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 public class PageActions {
     private WebDriver driver;
@@ -25,19 +26,23 @@ public class PageActions {
         return driver.getCurrentUrl();
     }
 
-    public WebElement waitUntilElementIsVisibleAndClickable(By locator)
-    {
+    public WebElement waitUntilElementIsVisibleAndClickable(By locator) {
         shortWait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         shortWait.until(ExpectedConditions.elementToBeClickable(locator));
 
         return driver.findElement(locator);
     }
-    public WebElement waitUntilElementIsVisibleAndClickable(WebElement locator)
-    {
+    public WebElement waitUntilElementIsVisibleAndClickable(WebElement locator) {
         shortWait.until(ExpectedConditions.visibilityOf(locator));
         shortWait.until(ExpectedConditions.elementToBeClickable(locator));
 
         return locator;
+    }
+
+    public void scrollToElement(By locator) {
+        shortWait.until(ExpectedConditions.presenceOfElementLocated(locator));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView();", driver.findElement(locator));
     }
 
 }

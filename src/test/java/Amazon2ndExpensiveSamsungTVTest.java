@@ -8,6 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,5 +52,25 @@ public class Amazon2ndExpensiveSamsungTVTest {
                 () -> assertTrue(pageActions.getCurrentPageURL().contains("gp/browse.htm")),
                 () -> assertTrue(televisionPage.getSearchCategory().isDisplayed()));
     }
+
+    @DisplayName("Validate that customer can filter 'Samsung' and sort price : High to low")
+    @Test
+    void assertThatCustomerFilterBrandAndSortPriceDesc() {
+        televisionPage
+                .clickBrand("Samsung")
+                .sortBy("Price: High to Low");
+
+        assertAll("Result page",
+                () -> assertTrue(televisionPage.ResultsContainsSameBrand("samsung")),
+                () -> assertTrue(televisionPage.ResultContainsPriceDesc()));
+    }
+
+    @DisplayName("Validate that customer can select 2nd highest result with 'About' details")
+    @Test
+    void assertThatCustomerSelect2ndExpensiveWithDetails() {
+
+    }
+
+
 
 }//class
