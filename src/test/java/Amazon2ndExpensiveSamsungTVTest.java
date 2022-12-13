@@ -4,19 +4,20 @@ import amazon.pages.HomePage;
 import amazon.pages.TelevisionPage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+
+import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class Amazon2ndExpensiveSamsungTVTest {
     private HomePage homePage;
     private TelevisionPage televisionPage;
@@ -29,8 +30,9 @@ public class Amazon2ndExpensiveSamsungTVTest {
         televisionPage = new TelevisionPage(driver);
         pageActions = new PageActions(driver);
     }
-    @DisplayName("Validate that customer can land on Amazon.in home page")
+    @DisplayName("1. Validate that customer can land on Amazon.in home page")
     @Test
+    @Order(1)
     void assertThatAmazonHomePageIsLoaded() {
         homePage.visitHomePage();
 
@@ -40,8 +42,9 @@ public class Amazon2ndExpensiveSamsungTVTest {
                 () -> assertTrue(homePage.getHamburgerMenu().isDisplayed()));
     }
 
-    @DisplayName("Validate that customer can reach Television page")
+    @DisplayName("2. Validate that customer can reach Television page")
     @Test
+    @Order(2)
     void assertThatCustomerReachTelevisionPage() {
         homePage
                 .ClickHamburgerMenu()
@@ -53,8 +56,9 @@ public class Amazon2ndExpensiveSamsungTVTest {
                 () -> assertTrue(televisionPage.getSearchCategory().isDisplayed()));
     }
 
-    @DisplayName("Validate that customer can filter 'Samsung' and sort price : High to low")
+    @DisplayName("3. Validate that customer can filter 'Samsung' and sort price : High to low")
     @Test
+    @Order(3)
     void assertThatCustomerFilterBrandAndSortPriceDesc() {
         televisionPage
                 .clickBrand("Samsung")
@@ -65,12 +69,19 @@ public class Amazon2ndExpensiveSamsungTVTest {
                 () -> assertTrue(televisionPage.ResultContainsPriceDesc()));
     }
 
-    @DisplayName("Validate that customer can select 2nd highest result with 'About' details")
+    @DisplayName("4. Validate that customer can select 2nd highest result with 'About' details")
     @Test
-    void assertThatCustomerSelect2ndExpensiveWithDetails() {
+    @Order(4)
+    void assertThatCustomerSelect2ndExpensiveWithDetails()  {
+        televisionPage
+                .SelectNProduct(2)
+                .switchPage();
 
+        assertAll("Product page",
+                () -> assertTrue(televisionPage.getAboutItemLbel().isDisplayed()));
+
+        var texts = driver.findElement(By.xpath("//div[@id='feature-bullets']"));
+        System.out.println();
+        System.out.println("\033[0;36m" + texts.getText() + "\033[0m");
     }
-
-
-
 }//class

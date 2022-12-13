@@ -9,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class TelevisionPage {
 
@@ -16,6 +17,8 @@ public class TelevisionPage {
     private WebDriver driver;
     @FindBy(id = "nav-search-label-id")
     private WebElement searchCategory;
+    @FindBy(xpath = "//h1[text()=' About this item ']")
+    private WebElement AboutItemLbel;
 
     public TelevisionPage(WebDriver driver) {
         this.driver = driver;
@@ -26,6 +29,11 @@ public class TelevisionPage {
     public WebElement getSearchCategory() {
         searchCategory = pageActions.waitUntilElementIsVisibleAndClickable(searchCategory);
         return searchCategory;
+    }
+
+    public WebElement getAboutItemLbel() {
+        AboutItemLbel = pageActions.waitUntilElementIsVisibleAndClickable(AboutItemLbel);
+        return AboutItemLbel;
     }
 
     public TelevisionPage clickBrand(String brand) {
@@ -90,5 +98,23 @@ public class TelevisionPage {
         }
 
         return isDesc;
+    }
+
+    public TelevisionPage SelectNProduct(int N) {
+        String resultsXpath = "//div[@data-component-type='s-search-result']//h2//span";
+        List<WebElement> brands = driver.findElements(By.xpath(resultsXpath));
+        brands.get(N-1).click();
+
+        return this;
+    }
+
+    public TelevisionPage switchPage() {
+
+        Set<String> st = driver.getWindowHandles();
+        ArrayList<String> al = new ArrayList<String>(st);
+        driver.switchTo().window(al.get(1));
+        pageActions.waitForPageToLoad();
+
+        return this;
     }
 }
