@@ -108,7 +108,7 @@ public class TelevisionPage {
         return this;
     }
 
-    public TelevisionPage switchPage() {
+    public TelevisionPage switchTab() {
 
         Set<String> st = driver.getWindowHandles();
         ArrayList<String> al = new ArrayList<String>(st);

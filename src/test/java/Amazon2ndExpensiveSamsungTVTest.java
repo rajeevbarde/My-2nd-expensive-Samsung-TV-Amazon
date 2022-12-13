@@ -2,6 +2,7 @@ import actions.PageActions;
 import amazon.factories.DriverFactory;
 import amazon.pages.HomePage;
 import amazon.pages.TelevisionPage;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -29,6 +30,13 @@ public class Amazon2ndExpensiveSamsungTVTest {
         homePage = new HomePage(driver);
         televisionPage = new TelevisionPage(driver);
         pageActions = new PageActions(driver);
+    }
+
+    @AfterAll
+    public void closeAll() {
+        driver.close();
+        driver.quit();
+
     }
     @DisplayName("1. Validate that customer can land on Amazon.in home page")
     @Test
@@ -75,13 +83,12 @@ public class Amazon2ndExpensiveSamsungTVTest {
     void assertThatCustomerSelect2ndExpensiveWithDetails()  {
         televisionPage
                 .SelectNProduct(2)
-                .switchPage();
+                .switchTab();
 
         assertAll("Product page",
                 () -> assertTrue(televisionPage.getAboutItemLbel().isDisplayed()));
 
         var texts = driver.findElement(By.xpath("//div[@id='feature-bullets']"));
-        System.out.println();
-        System.out.println("\033[0;36m" + texts.getText() + "\033[0m");
+        System.out.println("\033[0;36m" + texts.getText() + "\033[0m"); //Print in CYAN
     }
 }//class
